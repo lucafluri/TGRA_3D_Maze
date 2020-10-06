@@ -47,6 +47,8 @@ class GraphicsProgram3D:
         self.S_key_down = False  
         self.A_key_down = False  
         self.D_key_down = False  
+        self.E_key_down = False  
+        self.Q_key_down = False  
         self.T_key_down = False  
         self.G_key_down = False  
 
@@ -65,12 +67,17 @@ class GraphicsProgram3D:
         if self.S_key_down:
             self.view_matrix.slide(0, 0, 1 * delta_time)
         if self.A_key_down:
-            # self.view_matrix.slide(-1 * delta_time, 0, 0)
-            self.view_matrix.yaw(180 * delta_time)
+            self.view_matrix.slide(-1 * delta_time, 0, 0)
+            # self.view_matrix.yaw(180 * delta_time)
         if self.D_key_down:
+            self.view_matrix.slide(1 * delta_time, 0, 0)
+            # self.view_matrix.yaw(-180 * delta_time)
+        if self.Q_key_down:
+            # self.view_matrix.slide(1 * delta_time, 0, 0)
+            self.view_matrix.yaw(180 * delta_time)
+        if self.E_key_down:
             # self.view_matrix.slide(1 * delta_time, 0, 0)
             self.view_matrix.yaw(-180 * delta_time)
-
 
         if self.T_key_down:
             self.fov -= 1.5 * delta_time
@@ -229,6 +236,10 @@ class GraphicsProgram3D:
                         self.A_key_down = True
                     if event.key == K_d:
                         self.D_key_down = True
+                    if event.key == K_e:
+                        self.E_key_down = True
+                    if event.key == K_q:
+                        self.Q_key_down = True
                     if event.key == K_t:
                         self.T_key_down = True
                     if event.key == K_g:
@@ -245,6 +256,10 @@ class GraphicsProgram3D:
                         self.A_key_down = False
                     if event.key == K_d:
                         self.D_key_down = False
+                    if event.key == K_e:
+                        self.E_key_down = False
+                    if event.key == K_q:
+                        self.Q_key_down = False
                     if event.key == K_t:
                         self.T_key_down = False
                     if event.key == K_g:
