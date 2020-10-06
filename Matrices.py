@@ -140,6 +140,22 @@ class ViewMatrix:
         self.v = self.u * -s + self.v * c
         self.u = tmp_u
 
+    def pitch(self, angle):
+        c = cos(angle * pi / 180.0)
+        s = sin(angle * pi / 180.0)
+
+        tmp_n = self.n * c + self.v * s
+        self.v = self.n * -s + self.v * c
+        self.n = tmp_n
+
+    def yaw(self, angle):
+        c = cos(angle * pi / 180.0)
+        s = sin(angle * pi / 180.0)
+
+        tmp_n = self.n * c + self.u * s
+        self.u = self.n * -s + self.u * c
+        self.n = tmp_n
+
 
     def get_matrix(self):
         minusEye = Vector(-self.eye.x, -self.eye.y, -self.eye.z)
