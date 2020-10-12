@@ -30,10 +30,14 @@ class GraphicsProgram3D:
             [3.0, -4, 4, thickness], [5, -5.0, thickness, 2], [6.5, -6, 3, thickness], 
             [8, -4.0, thickness, 4], [4.0, -2, 8, thickness]]
 
+    weirdObjectColor = [1.0, 1.0, 0.0]
+
 
     def __init__(self):
 
         pygame.init() 
+        pygame.display.set_caption('TGRA Assignment 34 -- Luca Fluri / Andy Méry')
+
         pygame.display.set_mode((800,600), pygame.OPENGL|pygame.DOUBLEBUF)
 
         self.shader = Shader3D()
@@ -153,11 +157,11 @@ class GraphicsProgram3D:
                 self.drawWall(x, y, xlength, ylength)
 
         # Rotating Cube
+        if self.checkWallCollision(8, 0, sqrt(2), sqrt(2)):
+            self.weirdObjectColor=[random(), random(), random()]
         self.drawWeirdRotatingObject()
 
-
         pygame.display.flip()
-
 
 
     def clamp(self, val, minVal, maxVal):
@@ -191,18 +195,9 @@ class GraphicsProgram3D:
         R = (V_tmp) - V
 
 
-        if(x == 4.0 and y == -2):
-            print("distance: ", distance)
-            print("Camera: ", camera.x, camera.y)
-            print("V: ", V.x, V.y)
-            print("Collision: ", collision)
-
         if(collision): 
             # Reposition Camera
             self.view_matrix.eye -= R
-        #     print("Collision detected")
-
-
 
         return collision
 
@@ -217,36 +212,11 @@ class GraphicsProgram3D:
         self.cube.draw(self.shader)
         self.model_matrix.pop_matrix()
 
-    # Draws a wall from startPoint to EndPoint with thickness of 0.1
-    def drawWall_x(self, start, end, y):
-        length = end - start
-        self.shader.set_solid_color(1.0, 0.0, 0.0)
-        self.model_matrix.push_matrix()
-        self.model_matrix.add_translation(length/2 + start, y, 4.0) 
-        self.model_matrix.add_scale(length, 0.1, 8)
-        self.shader.set_model_matrix(self.model_matrix.matrix)
-        self.cube.draw(self.shader)
-        self.model_matrix.pop_matrix()
-
-        # Store Center Point and Width and height in Array
-        #                           X        Y  X-Width Y-Height
-        self.walls.append([length/2 + start, y, length, 0.1])
-
-    def drawWall_y(self, start, end, x):
-        length = end - start
-        self.shader.set_solid_color(1.0, 0.0, 0.0)
-        self.model_matrix.push_matrix()
-        self.model_matrix.add_translation(x, length/2 + start, 4.0) 
-        self.model_matrix.add_scale(0.1, length, 8)
-        self.shader.set_model_matrix(self.model_matrix.matrix)
-        self.cube.draw(self.shader)
-        self.model_matrix.pop_matrix()
-        
-        self.walls.append([x, length/2 + start, 0.1, length])
     
     def drawWeirdRotatingObject(self):
+        r, g, b = self.weirdObjectColor
         for i in range(0, 360, 30):
-            self.shader.set_solid_color(1.0, 1.0, 0.0)
+            self.shader.set_solid_color(r, g, b)
             self.model_matrix.push_matrix()
             self.model_matrix.add_translation(8.0, 0.0 , 3.0)  
             self.model_matrix.add_scale(1, 1, 1)
